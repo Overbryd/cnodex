@@ -1,4 +1,21 @@
-# Cnodex
+# Nodex
+
+A set of helper modules that enable you to work with **distributed elixir** and **c-nodes**.
+
+Available as a hex-package:
+
+```elixir
+{:nodex, "~> 0.1.0"}
+```
+
+## `Nodex.Distributed`
+
+A module to setup a distributed environment programmatically.
+It takes care of starting **epmd**, starts **:net_kernel** for you and can start and maintain **child**-nodes.
+
+
+
+## `Nodex.Cnode`
 
 Helper module to simplify working with a C-Node. It is also allows you to start and monitor
 an external C-Node process within a supervision tree.
@@ -12,13 +29,7 @@ an external C-Node process within a supervision tree.
 > an external OS-process. And even better than port drivers, you gain all of the benefits including
 > scalability.
 
-Available as a hex-package:
-
-```elixir
-{:cnodex, "~> 0.1.0"}
-```
-
-## Mount a C-Node inside your supervision tree
+### Mount a C-Node inside your supervision tree
 
 Mount Cnodex as a worker, and reference it by name:
 ```elixir
@@ -34,14 +45,14 @@ Later call into your C-node through Cnodex:
 {:ok, reply} = Cnodex.call(:ExampleClient, {:ping, "hello world"})
 ```
 
-## Start and call into a C-Node
+### Start and call into a C-Node
 
 ```
 {:ok, pid} = Cnodex.start_link(%{exec_path: "priv/example_client"})
 {:ok, reply} = Cnodex.call(pid, {:ping, "hello world"})
 ```
 
-## Implementation
+### Implementation
 
 Your supervisor spawns a gen\_server worker process that is using a node monitor on the C-Node.
 
@@ -68,7 +79,7 @@ This is especially helpful, since you can only use C-Nodes if you have **epmd** 
 
 So in test cases, you can simply use `Cnodex.Distributed.up()` to start **epmd** and **:net_kernel**.
 
-## Writing a C-Node
+### Writing a C-Node
 
 This repository provides you with some good starting points for writing a project or package that
 encloses a C-Node.
@@ -119,7 +130,7 @@ is notified of the loss.
 It is best to write the C-program in a way that is exits cleanly as soon as it looses the connection or something goes wrong.
 That aligns the C-program with the idea that it can be controlled by a supervisor.
 
-## Performance
+### Performance
 
 The repository includes a benchmark comparing local, remote and cnode calling performance:
 
@@ -142,7 +153,7 @@ remote             50000   48.64 µs/op
 
 Executed on a MacBook Pro 2,5GHz.
 
-## Documentation
+# Documentation
 
 The docs can be found at [https://hexdocs.pm/cnodex](https://hexdocs.pm/cnodex).
 
